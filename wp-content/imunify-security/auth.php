@@ -1,0 +1,4 @@
+<?php
+return array(
+	'token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NTY5MzY4NDAsInVzZXJuYW1lIjoiam9zZXF1YWwubmV0X3FsdTltdmx6ZGsiLCJzaXRlX3BhdGgiOiIvdmFyL3d3dy92aG9zdHMvam9zZXF1YWwubmV0L25lc3Quam9zZXF1YWwubmV0In0.YKpYZEMuybIZ6Klx9FUE5C-XTZRjlyVjATRj1rBWIW8',
+);

@@ -1,0 +1,39 @@
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 82.6 MB/128 MB -  > Start upgrade from 8.7.3
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_emails`] => Created table `wp_newsletter_emails`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_sent`] => Created table `wp_newsletter_sent`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.4 MB/128 MB -  > Array
+(
+    [`wp_newsletter`] => Created table `wp_newsletter`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_user_logs`] => Created table `wp_newsletter_user_logs`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_user_meta`] => Created table `wp_newsletter_user_meta`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_stats`] => Created table `wp_newsletter_stats`
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Array
+(
+    [`wp_newsletter_logs`] => Created table `wp_newsletter_logs`
+    [wp_newsletter_logs.status] => Changed type of wp_newsletter_logs.status from int(11) to int
+)
+
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.3 MB/128 MB -  > Backing up options of 8.7.3
+19-08-2025 11:34:49 - INFO  - 8.9.3 - 86.5 MB/128 MB -  > End

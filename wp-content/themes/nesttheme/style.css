@@ -1,0 +1,206 @@
+/* 
+.custom-modal {
+    display: none !important;
+}
+.modal-backdrop,.menu-expand{display: none !important;} 
+*/
+.product-cart-wrap .product-action-1 a.action-btn {
+    width: 33px;
+}
+.modal-backdrop.show {
+    display: none;
+}
+
+div#map iframe {
+    width: 100% ;
+}
+.mobile-social-icon i {
+    color: white;
+    margin: auto;
+}
+
+footer .mobile-social-icon h6 {
+    margin-right: 8px;
+}
+.newsletter .newsletter-inner .newsletter-content h2 p {
+    font-size: 40px;
+    font-family: "Quicksand", sans-serif;
+    color: #253D4E;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+form.variations_form.cart table.variations td.value{
+    display: flex;
+    padding: 10px 20px;
+    border: 1px solid #3BB77E;
+    vertical-align: middle;
+    border-radius: 5px;
+}
+form.variations_form.cart table.variations th.label {
+    border: 0;
+} 
+form.variations_form.cart table.variations td.value a.reset_variations {
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.woocommerce-variation-add-to-cart.variations_button {
+    display: flex;
+    align-items: center;
+}
+button.single_add_to_cart_button {
+    width: fit-content;
+    padding: 12px 20px;
+}
+
+.woocommerce-variation-add-to-cart .quantity input {
+    height: 50px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #3BB77E !important;
+    font-size: 16px;
+    font-weight: 700;
+    color: #3BB77E;
+    border-radius: 5px;
+    padding: 11px 10px 11px 10px;
+    max-width: 90px;
+}
+.detail-info .product-price .current-price {
+    font-size: 38px;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.current-price del .woocommerce-Price-amount.amount {
+    text-decoration: line-through;
+    color: #B6B6B6;
+    margin-left: 10px;
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+} 
+
+span.woocommerce-Price-currencySymbol {
+    margin-right: 10px;
+}
+.shop-page span.woocommerce-Price-currencySymbol {
+    margin-right: 0;
+}
+
+.product-cart-wrap .product-content-wrap .product-price span {
+    font-size: 14px;
+}
+
+
+.shop-accordion .accordion {
+    list-style: none;
+    padding: 0;
+}
+.shop-accordion .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    flex-direction: row;
+}
+.shop-accordion .accordion-toggle {
+    background: none;
+    border: none;
+    font-size: 16px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+}
+.shop-accordion .accordion-content {
+    display: none;
+    padding: 0px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+.shop-accordion .subcategories {
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+}
+.shop-accordion .theiaStickySidebar li.accordion-item {
+    border-top: 1px solid #F2F3F4;
+    display: flex;
+    flex-direction: column;
+}
+.shop-accordion .accordion-content .subcategories li.subcategory-item {
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+.product-cart-wrap .product-card-bottom {
+    align-items: center;
+}
+.sort-by-dropdown {
+    display: none;
+    position: absolute;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.sort-by-dropdown.active {
+    display: block;
+}
+
+.sort-by-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sort-by-dropdown ul li a {
+    display: block;
+    padding: 5px 10px;
+    color: black;
+    text-decoration: none;
+}
+
+.sort-by-dropdown ul li a:hover {
+    background: #f0f0f0;
+}
+
+.product-cart-wrap .product-card-bottom .add-cart .add {
+    padding: 6px 10px;
+    text-align: center;
+    width: 100%;
+}
+
+
+
+
+.shop-page .product-cart-wrap .product-content-wrap .product-price,.shop-page .product-cart-wrap .product-card-bottom .add-cart  {
+    width: 50%;
+    padding-top: 0;
+}
+
+.shop-page .product-cart-wrap .product-card-bottom .add-cart .add:hover {
+    transform: translateY(0px);
+}
+.comment-form-cookies-consent input#wp-comment-cookies-consent {
+    width: auto;
+    height: auto;
+}
+p.form-submit input#submit {
+    width: auto;
+    padding: 8px 30px;
+    height: auto;
+}
+form#commentform p.comment-form-email ,
+form#commentform p.comment-form-author {
+    width: 50%;
+}
+.detail-extralink .detail-extralink > div {
+    width: 100%;
+}
+.quantity .qty {
+    width: auto;
+}
