@@ -719,7 +719,8 @@
             });
         }
     });
-
+    jQuery("#commentform").addClass('woocommerce');
+    jQuery(".comment_container").addClass('woocommerce');
     /*--- VSticker ----*/
     $("#news-flash").vTicker({
         speed: 500,
@@ -728,5 +729,29 @@
         mousePause: false,
         showItems: 1
     });
+    (function(){
+        const origDefine = customElements.define;
+        customElements.define = function(name, constructor, options){
+           if (customElements.get(name)) {
+              console.warn(`Custom element "${name}" already defined, skipping.`);
+              return;
+           }
+           origDefine.call(this, name, constructor, options);
+        };
+     })();
+     
 })(jQuery);
 
+jQuery(document).ready(function($) {
+
+    // عند بدء الفلترة - أظهر preloader
+    $(document).on('yith-wcan-before-ajax', function(){
+        $('#preloader-active').fadeIn();
+    });
+
+    // عند انتهاء الفلترة - أخفي preloader
+    $(document).on('yith-wcan-ajax-filtered', function(){
+        $('#preloader-active').fadeOut();
+    });
+
+});

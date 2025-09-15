@@ -1,7 +1,7 @@
 <footer class="main">
         <?php
             $args = array('post_type' => 'page','p' => 166);
-            $loop = new wp_query($args);
+            $loop = new WP_Query($args);
             if($loop->have_posts()) { $loop->the_post();
         ?>
             <section class="newsletter mb-15 wow animate__animated animate__fadeIn">
@@ -65,31 +65,27 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".1s>
-                            <h4 class=" widget-title>Company</h4>
-                            <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Delivery Information</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms &amp; Conditions</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Support Center</a></li>
-                                <li><a href="#">Careers</a></li>
-                            </ul>
+                        <div class="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                            <h4 class=" widget-title">Company</h4>
+                            <ul class="">
+                                <?php
+                                    wp_nav_menu( array(
+                                        'theme_location' => 'footer_menu',
+                                        'menu_class' => "footer-list mb-sm-5 mb-md-0",
+                                        'container' => false
+                                    ) );
+                                ?>  
                         </div>
                         <div class="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
                             <h4 class="widget-title">Account</h4>
                             <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">Sign In</a></li>
-                                <li><a href="#">View Cart</a></li>
-                                <li><a href="#">My Wishlist</a></li>
-                                <li><a href="#">Track My Order</a></li>
-                                <li><a href="#">Help Ticket</a></li>
-                                <li><a href="#">Shipping Details</a></li>
-                                <li><a href="#">Compare products</a></li>
+                                <li><a href="<?php echo is_user_logged_in() ? wp_logout_url() : wp_login_url(); ?>"><?php echo is_user_logged_in() ? 'Sign Out' : 'Sign In'; ?></a></li>
+                                <li><a href="<?php echo wc_get_cart_url(); ?>">View Cart</a></li>
+                                <li><a href="<?php echo YITH_WCWL()->get_wishlist_url(); ?>">My Wishlist</a></li>
+                                <li><a href="<?php echo wc_get_page_permalink('myaccount'); ?>">My Account</a></li>
                             </ul>
                         </div>
-                        <div class="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
+                        <div class="d-none footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
                             <h4 class="widget-title">Corporate</h4>
                             <ul class="footer-list mb-sm-5 mb-md-0">
                                 <li><a href="#">Become a Vendor</a></li>
@@ -104,13 +100,37 @@
                         <div class="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
                             <h4 class="widget-title">Popular</h4>
                             <ul class="footer-list mb-sm-5 mb-md-0">
-                                <li><a href="#">Milk & Flavoured Milk</a></li>
-                                <li><a href="#">Butter and Margarine</a></li>
-                                <li><a href="#">Eggs Substitutes</a></li>
-                                <li><a href="#">Marmalades</a></li>
-                                <li><a href="#">Sour Cream and Dips</a></li>
-                                <li><a href="#">Tea & Kombucha</a></li>
-                                <li><a href="#">Cheese</a></li>
+                                <?php
+                                // Get top 4 best selling products using get_posts to avoid query conflicts
+                                $best_selling_products = get_posts(array(
+                                    'post_type' => 'product',
+                                    'posts_per_page' => 4,
+                                    'meta_key' => 'total_sales',
+                                    'orderby' => 'meta_value_num',
+                                    'order' => 'DESC'
+                                ));
+                                
+                                if (!empty($best_selling_products)) :
+                                    foreach ($best_selling_products as $product_post) :
+                                ?>
+                                    <li><a href="<?php echo get_permalink($product_post->ID); ?>"><?php echo $product_post->post_title; ?></a></li>
+                                <?php 
+                                    endforeach;
+                                else :
+                                    // Fallback to product categories if no products found
+                                    $categories = get_terms(array(
+                                        'taxonomy' => 'product_cat',
+                                        'hide_empty' => false,
+                                        'number' => 4
+                                    ));
+                                    
+                                    if (!empty($categories) && !is_wp_error($categories)) {
+                                        foreach ($categories as $category) {
+                                            echo '<li><a href="' . get_term_link($category) . '">' . esc_html($category->name) . '</a></li>';
+                                        }
+                                    }
+                                endif;
+                                ?>
                             </ul>
                         </div>
                         <div class="footer-link-widget widget-install-app col wow animate__animated animate__fadeInUp" data-wow-delay=".5s">
@@ -134,16 +154,13 @@
                         <div class="footer-bottom"></div>
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6">
-                        <p class="font-sm mb-0">&copy; 2025, <strong class="text-brand">Nest</strong> - HTML Ecommerce Template <br />All rights reserved</p>
+                        <p class="font-sm mb-0">&copy; <?php echo date('Y'); ?>, <strong class="text-brand"><?php echo get_bloginfo('name'); ?></strong>  All rights reserved</p>
                     </div>
                     <div class="col-xl-4 col-lg-6 text-center d-none d-xl-block">
-                        <div class="hotline d-lg-inline-flex mr-30">
-                            <img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
-                            <p>1900 - 6666<span>Working 8:00 - 22:00</span></p>
-                        </div>
+                       
                         <div class="hotline d-lg-inline-flex">
                             <img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
-                            <p>1900 - 8888<span>24/7 Support Center</span></p>
+                            <p><a href="tel:<?php echo get_field('phone');?>"><?php echo get_field('phone');?></a><span>24/7 Support Center</span></p>
                         </div>                            
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-6 text-end d-none d-md-block">
@@ -155,11 +172,10 @@
                                 <?php endwhile; ?>
                             <?php endif; ?>
                             
-                        <p class="font-sm"><?php echo get_field('follow_us_description');?></p>
                     </div>
                 </div>
             </div>
-        <?php } wp_reset_query();?>
+        <?php } wp_reset_postdata(); wp_reset_query();?>
 
     </footer>
     <!-- Preloader Start -->

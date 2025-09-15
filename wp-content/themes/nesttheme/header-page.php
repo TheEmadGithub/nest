@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <header class="header-area header-style-1 header-height-2">
+    <header class="ivory-header header-area header-style-1 header-height-2">
         <div class="mobile-promotion">
             <span>Grand opening, <strong>up to 15%</strong> off all items. Only <strong>3 days</strong> left</span>
         </div>
@@ -28,30 +28,17 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                        <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Milks and Dairies</option>
-                                    <option>Wines & Alcohol</option>
-                                    <option>Clothing & Beauty</option>
-                                    <option>Pet Foods & Toy</option>
-                                    <option>Fast food</option>
-                                    <option>Baking material</option>
-                                    <option>Vegetables</option>
-                                    <option>Fresh Seafood</option>
-                                    <option>Noodles & Rice</option>
-                                    <option>Ice cream</option>
-                                </select>
-                                <input type="text" placeholder="Search for items..." />
-                            </form>
+                            <div class="search-wrapper">
+                                <?php echo do_shortcode('[ivory-search id="303" title="AJAX Search Form for WooCommerce"]'); ?>
+                            </div>
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
-                                <div class="search-location">
+                                <div class="search-location d-none">
                                     <form action="#">
                                         <select class="select-active">
                                             <option>Your Location</option>
@@ -71,7 +58,7 @@
                                         </select>
                                     </form>
                                 </div>
-                                <div class="header-action-icon-2">
+                                <div class="header-action-icon-2 d-none">
                                     <a href="shop-compare.html">
                                         <img class="svgInject" alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-compare.svg" />
                                         <span class="pro-count blue">3</span>
@@ -88,60 +75,34 @@
                                 <div class="header-action-icon-2">
                                     <a class="mini-cart-icon" href="shop-cart.html">
                                         <img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-cart.svg" />
-                                        <span class="pro-count blue">2</span>
+                                        <span class="pro-count blue"><?php 
+                                            // Count only valid, visible items
+                                            $valid_items = 0;
+                                            if (WC()->cart && !WC()->cart->is_empty()) {
+                                                foreach (WC()->cart->get_cart() as $cart_item) {
+                                                    if ($cart_item['quantity'] > 0 && $cart_item['data'] && $cart_item['data']->exists()) {
+                                                        $valid_items++;
+                                                    }
+                                                }
+                                            }
+                                            echo $valid_items;
+                                        ?></span>
                                     </a>
                                     <a href="shop-cart.html"><span class="lable">Cart</span></a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        <ul>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-3.jpg" /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                    <h4><span>1 × </span>$800.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-2.jpg" /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                    <h4><span>1 × </span>$3200.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-total">
-                                                <h4>Total <span>$4000.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-button">
-                                                <a href="shop-cart.html" class="outline">View cart</a>
-                                                <a href="shop-checkout.html">Checkout</a>
-                                            </div>
-                                        </div>
+                                        <?php get_template_part('template-parts/cart-dropdown-content'); ?>
                                     </div>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a href="page-account.html">
+                                    <a href="<?php echo get_permalink(11); ?>">
                                         <img class="svgInject" alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-user.svg" />
                                     </a>
-                                    <a href="page-account.html"><span class="lable ml-0">Account</span></a>
+                                    <a href="<?php echo get_permalink(11); ?>"><span class="lable ml-0">Account</span></a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
                                         <ul>
-                                            <li><a href="page-account.html"><i class="fi fi-rs-user mr-10"></i>My Account</a></li>
-                                            <li><a href="page-account.html"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a></li>
-                                            <li><a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a></li>
+                                            <li><a href="<?php echo get_permalink(11); ?>"><i class="fi fi-rs-user mr-10"></i>My Account</a></li>
                                             <li><a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
-                                            <li><a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a></li>
-                                            <li><a href="page-login.html"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a></li>
+                                            <li><a href="<?php echo wp_logout_url(home_url()); ?>"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -154,11 +115,11 @@
         <div class="header-bottom header-bottom-bg-color sticky-bar">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
-                    <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
-                    </div>
+                                         <div class="logo logo-width-1 d-block d-lg-none">
+                         <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                     </div>
                     <div class="header-nav d-none d-lg-flex">
-                        <div class="main-categori-wrap d-none d-lg-block">
+                        <div class="main-categori-wrap d-none d-lg-block-">
                             <a class="categories-button-active" href="#">
                                 <span class="fi-rs-apps"></span> <span class="et">Browse</span> All Categories
                                 <i class="fi-rs-angle-down"></i>
@@ -227,19 +188,19 @@
                             <nav>
                                 <ul class="d-none">
                                     <li class="hot-deals d-none"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-hot.svg" alt="hot deals" /><a href="shop-grid-right.html">Deals</a></li>
+                                                                         <li>
+                                         <a href="<?php echo home_url(); ?>">Home <i class="fi-rs-angle-down d-none"></i></a>
+                                         <ul class="sub-menu d-none">
+                                             <li><a href="<?php echo home_url(); ?>">Home 1</a></li>
+                                             <li><a href="index-2.html">Home 2</a></li>
+                                             <li><a href="index-3.html">Home 3</a></li>
+                                             <li><a href="index-4.html">Home 4</a></li>
+                                             <li><a href="index-5.html">Home 5</a></li>
+                                             <li><a href="index-6.html">Home 6</a></li>
+                                         </ul>
+                                     </li>
                                     <li>
-                                        <a href="index.html">Home <i class="fi-rs-angle-down d-none"></i></a>
-                                        <ul class="sub-menu d-none">
-                                            <li><a href="index.html">Home 1</a></li>
-                                            <li><a href="index-2.html">Home 2</a></li>
-                                            <li><a href="index-3.html">Home 3</a></li>
-                                            <li><a href="index-4.html">Home 4</a></li>
-                                            <li><a href="index-5.html">Home 5</a></li>
-                                            <li><a href="index-6.html">Home 6</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="page-about.html">About</a>
+                                        <a href="<?php echo get_permalink(168); ?>">About</a>
                                     </li>
                                     <li>
                                         <a href="shop-grid-left.html">Shop <i class="fi-rs-angle-down d-none"></i></a>
@@ -369,21 +330,21 @@
                                     <li class="d-none">
                                         <a href="#">Pages <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
-                                            <li><a href="page-about.html">About Us</a></li>
-                                            <li><a href="page-contact.html">Contact</a></li>
-                                            <li><a href="page-account.html">My Account</a></li>
+                                            <li><a href="<?php echo get_permalink(168); ?>">About Us</a></li>
+                                            <li><a href="<?php echo get_permalink(166); ?>">Contact</a></li>
+                                            <li><a href="<?php echo get_permalink(11); ?>">My Account</a></li>
                                             <li><a href="page-login.html">Login</a></li>
                                             <li><a href="page-register.html">Register</a></li>
                                             <li><a href="page-forgot-password.html">Forgot password</a></li>
                                             <li><a href="page-reset-password.html">Reset password</a></li>
                                             <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                            <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                            <li><a href="<?php echo get_permalink(3); ?>">Privacy Policy</a></li>
                                             <li><a href="page-terms.html">Terms of Service</a></li>
                                             <li><a href="page-404.html">404 Page</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a class="active" href="page-contact.html">Contact</a>
+                                        <a class="active" href="<?php echo get_permalink(166); ?>">Contact</a>
                                     </li>
                                 </ul>
                                 <?php
@@ -419,7 +380,18 @@
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="shop-cart.html">
                                     <img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-cart.svg" />
-                                    <span class="pro-count white">2</span>
+                                    <span class="pro-count white"><?php 
+                                        // Count only valid, visible items
+                                        $valid_items = 0;
+                                        if (WC()->cart && !WC()->cart->is_empty()) {
+                                            foreach (WC()->cart->get_cart() as $cart_item) {
+                                                if ($cart_item['quantity'] > 0 && $cart_item['data'] && $cart_item['data']->exists()) {
+                                                    $valid_items++;
+                                                }
+                                            }
+                                        }
+                                        echo $valid_items;
+                                    ?></span>
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <ul>
@@ -465,12 +437,12 @@
             </div>
         </div>
     </header>
-    <div class="mobile-header-active mobile-header-wrapper-style">
+    <div class="ivory-header mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
-                <div class="mobile-header-logo">
-                    <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
-                </div>
+                                 <div class="mobile-header-logo">
+                     <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
                         <i class="icon-top"></i>
@@ -480,28 +452,25 @@
             </div>
             <div class="mobile-header-content-area">
                 <div class="mobile-search search-style-3 mobile-header-border">
-                    <form action="#">
-                        <input type="text" placeholder="Search for items…" />
-                        <button type="submit"><i class="fi-rs-search"></i></button>
-                    </form>
+                    <?php echo do_shortcode('[ivory-search id="303" title="AJAX Search Form for WooCommerce"]'); ?>
                 </div>
                 <div class="mobile-menu-wrap mobile-header-border">
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu font-heading d-none">
+                                                         <li class="menu-item-has-children">
+                                 <a href="<?php echo home_url(); ?>">Home</a>
+                                 <ul class="dropdown d-none">
+                                     <li><a href="<?php echo home_url(); ?>">Home 1</a></li>
+                                     <li><a href="index-2.html">Home 2</a></li>
+                                     <li><a href="index-3.html">Home 3</a></li>
+                                     <li><a href="index-4.html">Home 4</a></li>
+                                     <li><a href="index-5.html">Home 5</a></li>
+                                     <li><a href="index-6.html">Home 6</a></li>
+                                 </ul>
+                             </li>
                             <li class="menu-item-has-children">
-                                <a href="index.html">Home</a>
-                                <ul class="dropdown d-none">
-                                    <li><a href="index.html">Home 1</a></li>
-                                    <li><a href="index-2.html">Home 2</a></li>
-                                    <li><a href="index-3.html">Home 3</a></li>
-                                    <li><a href="index-4.html">Home 4</a></li>
-                                    <li><a href="index-5.html">Home 5</a></li>
-                                    <li><a href="index-6.html">Home 6</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children">
-                                <a href="page-about.html">About</a>
+                                <a href="<?php echo get_permalink(168); ?>">About</a>
                             </li>
                             <li class="menu-item-has-children">
                                 <a href="shop-grid-left.html">shop</a>
@@ -599,20 +568,20 @@
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="page-contact.html">Contact</a>
+                                <a href="<?php echo get_permalink(166); ?>">Contact</a>
                             </li>
                             <li class="menu-item-has-children d-none">
                                 <a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    <li><a href="page-about.html">About Us</a></li>
-                                    <li><a href="page-contact.html">Contact</a></li>
-                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="<?php echo get_permalink(168); ?>">About Us</a></li>
+                                    <li><a href="<?php echo get_permalink(166); ?>">Contact</a></li>
+                                    <li><a href="<?php echo get_permalink(11); ?>">My Account</a></li>
                                     <li><a href="page-login.html">Login</a></li>
                                     <li><a href="page-register.html">Register</a></li>
                                     <li><a href="page-forgot-password.html">Forgot password</a></li>
                                     <li><a href="page-reset-password.html">Reset password</a></li>
                                     <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="<?php echo get_permalink(3); ?>">Privacy Policy</a></li>
                                     <li><a href="page-terms.html">Terms of Service</a></li>
                                     <li><a href="page-404.html">404 Page</a></li>
                                 </ul>
@@ -640,7 +609,7 @@
                 </div>
                 <div class="mobile-header-info-wrap">
                     <div class="single-mobile-header-info">
-                        <a href="page-contact.html"><i class="fi-rs-marker"></i> Our location </a>
+                        <a href="<?php echo get_permalink(166); ?>"><i class="fi-rs-marker"></i> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
@@ -666,8 +635,15 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                    <span></span> Pages <span></span> Contact
+                    <?php 
+                    if (function_exists('yoast_breadcrumb')) {
+                        yoast_breadcrumb('<div class="yoast-breadcrumb">', '</div>');
+                    } else {
+                        // Fallback breadcrumb
+                        echo '<a href="' . home_url() . '" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>';
+                        echo '<span></span> ' . get_the_title() . ' <span></span>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>

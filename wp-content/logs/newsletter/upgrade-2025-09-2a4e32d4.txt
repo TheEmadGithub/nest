@@ -1,0 +1,39 @@
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 91.6 MB/256 MB - [cron] > Start upgrade from 8.9.3
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_emails`] => Created table `wp_newsletter_emails`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_sent`] => Created table `wp_newsletter_sent`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter`] => Created table `wp_newsletter`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_user_logs`] => Created table `wp_newsletter_user_logs`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_user_meta`] => Created table `wp_newsletter_user_meta`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_stats`] => Created table `wp_newsletter_stats`
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.1 MB/256 MB - [cron] > Array
+(
+    [`wp_newsletter_logs`] => Created table `wp_newsletter_logs`
+    [wp_newsletter_logs.status] => Changed type of wp_newsletter_logs.status from int(11) to int
+)
+
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.2 MB/256 MB - [cron] > Backing up options of 8.9.3
+02-09-2025 09:28:23 - INFO  - 8.9.4 - 95.3 MB/256 MB - [cron] > End

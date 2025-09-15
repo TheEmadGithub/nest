@@ -21,25 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="container page-header breadcrumb-wrap">
-	
-<?php 
-$delimiter = ' > ';
-if ( ! empty( $breadcrumb ) ) {
-	echo $wrap_before;
-	foreach ( $breadcrumb as $key => $crumb ) {
-		echo $before;
-		if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
-		} else {
-			echo esc_html( $crumb[0] );
-		}
-		echo $after;
-		if ( sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo ' > '; // Changed delimiter from "/" to ">"
+	<?php 
+	// Use Yoast breadcrumb if available, otherwise fallback to WooCommerce breadcrumb
+	if (function_exists('yoast_breadcrumb')) {
+		yoast_breadcrumb('<div class="yoast-breadcrumb">', '</div>');
+	} else {
+		// Fallback to original WooCommerce breadcrumb
+		$delimiter = ' > ';
+		if ( ! empty( $breadcrumb ) ) {
+			echo $wrap_before;
+			foreach ( $breadcrumb as $key => $crumb ) {
+				echo $before;
+				if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
+					echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
+				} else {
+					echo esc_html( $crumb[0] );
+				}
+				echo $after;
+				if ( sizeof( $breadcrumb ) !== $key + 1 ) {
+					echo ' > '; // Changed delimiter from "/" to ">"
+				}
+			}
+			echo $wrap_after;
 		}
 	}
-	echo $wrap_after;
-}
-?>
-
+	?>
 </div>

@@ -17,7 +17,7 @@ if ( ! $product ) {
     return;
 }
 ?>
- <div class="container mb-30">
+ <div class="container mb-30 single-product-page">
             <div class="row">
                 <div class="col-xl-11 col-lg-12 m-auto">
                     <div class="row flex-row-reverse">
@@ -174,146 +174,8 @@ if ( ! $product ) {
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-3 primary-sidebar sticky-sidebar mt-30">
-                            <div class="sidebar-widget widget-category-2 mb-30">
-                                <h5 class="section-title style-1 mb-30">Category</h5>
-								<ul>
-                                    <?php
-                                        $args = array(
-                                            'taxonomy'   => 'product_cat',
-                                            'orderby'    => 'name',
-                                            'order'      => 'ASC',
-                                            'hide_empty' => false, // Retrieve all categories
-                                        );
-
-                                        $product_categories = get_terms($args);
-
-                                        if (!empty($product_categories) && !is_wp_error($product_categories)) {
-                                            foreach ($product_categories as $category) {
-                                                $count = $category->count;
-                                                
-                                                // Ensure categories with 0 products are not displayed
-                                                if ($count == 0) {
-                                                    continue;
-                                                }
-
-                                                $category_link = get_term_link($category);
-                                                $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
-                                                $category_image = wp_get_attachment_url($thumbnail_id) ?: get_template_directory_uri() . '/assets/imgs/theme/icons/default-category.svg'; // Default image fallback
-                                                ?>
-                                                <li>
-                                                    <a href="<?php echo esc_url($category_link); ?>">
-                                                        <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr($category->name); ?>" />
-                                                        <?php echo esc_html($category->name); ?>
-                                                    </a>
-                                                    <span class="count"><?php echo esc_html($count); ?></span>
-                                                </li>
-                                                <?php
-                                            }
-                                        } else {
-                                            echo '<li>No categories found.</li>';
-                                        }
-                                    ?>
-                                </ul>
-
-                            </div>
-                            <!-- Fillter By Price -->
-                            <div class="sidebar-widget price_range range mb-30">
-                                <h5 class="section-title style-1 mb-30">Fill by price</h5>
-                                <div class="price-filter">
-                                    <div class="price-filter-inner">
-                                        <div id="slider-range" class="mb-20"></div>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="caption">From: <strong id="slider-range-value1" class="text-brand"></strong></div>
-                                            <div class="caption">To: <strong id="slider-range-value2" class="text-brand"></strong></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group">
-                                    <div class="list-group-item mb-10 mt-10">
-                                        <label class="fw-900">Color</label>
-                                        <div class="custome-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox1"><span>Red (56)</span></label>
-                                            <br />
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox2" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox2"><span>Green (78)</span></label>
-                                            <br />
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox3"><span>Blue (54)</span></label>
-                                        </div>
-                                        <label class="fw-900 mt-15">Item Condition</label>
-                                        <div class="custome-checkbox">
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox11"><span>New (1506)</span></label>
-                                            <br />
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox21" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox21"><span>Refurbished (27)</span></label>
-                                            <br />
-                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox31" value="" />
-                                            <label class="form-check-label" for="exampleCheckbox31"><span>Used (45)</span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
-                            </div>
-                            <!-- Product sidebar Widget -->
-                            <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
-                                <h5 class="section-title style-1 mb-30">New products</h5>
-                                
-
-
-
-                                <?php
-                                    $args = array(
-                                        'post_type'      => 'product',
-                                        'posts_per_page' => 3,
-                                        'orderby'        => 'date',
-                                        'order'          => 'DESC',
-                                    );
-
-                                    $loop = new WP_Query($args);
-
-                                    if ($loop->have_posts()) :
-                                        while ($loop->have_posts()) : $loop->the_post();
-                                            global $product;
-                                ?>
-
-
-                                    <div class="single-post clearfix">
-                                        <div class="image">
-                                            <img src="<?php echo get_the_post_thumbnail($product->get_id(), 'medium'); ?>" />
-                                        </div>
-                                        <div class="content pt-10">
-                                            <h6><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h6>
-                                            <p class="price mb-0 mt-5"><?php echo $product->get_price_html(); ?></p>
-                                            <div class="product-rate">
-                                            <div class="product-rating" style="width: <?php echo ($product->get_average_rating() / 5) * 100; ?>%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-                                        endwhile;
-                                        wp_reset_postdata();
-                                    endif;
-                                ?>
-
-
-
-
-
-                            </div>
-                            <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
-                                <img src="<?php bloginfo('template_directory');?>/assets/imgs/banner/banner-11.png" alt="" />
-                                <div class="banner-text">
-                                    <span>Oganic</span>
-                                    <h4>
-                                        Save 17% <br />
-                                        on <span class="text-brand">Oganic</span><br />
-                                        Juice
-                                    </h4>
-                                </div>
-                            </div>
+						<div class="col-xl-3 primary-sidebar sticky-sidebar mt-30 ">
+                            <?php get_sidebar(); ?>
                         </div>
                     </div>
                 </div>

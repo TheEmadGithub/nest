@@ -161,21 +161,28 @@
                 <div class="row align-items-center">
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info">
-                            <ul>
-                                <li><a href="page-about.htlm">About Us</a></li>
-                                <li><a href="page-account.html">My Account</a></li>
-                                <li><a href="shop-wishlist.html">Wishlist</a></li>
-                                <li><a href="shop-order.html">Order Tracking</a></li>
-                            </ul>
+                                                         <ul>
+                                 <li><a href="<?php echo get_permalink(168); ?>">About Us</a></li>
+                                 <li><a href="<?php echo get_permalink(166); ?>">Contact Us</a></li>
+                                 <li><a href="<?php echo function_exists('YITH_WCWL') ? YITH_WCWL()->get_wishlist_url() : '#'; ?>">Wishlist</a></li>
+                             </ul>
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-4">
                         <div class="text-center">
                             <div id="news-flash" class="d-inline-block">
                                 <ul>
-                                    <li>100% Secure delivery without contacting the courier</li>
-                                    <li>Supper Value Deals - Save more with coupons</li>
-                                    <li>Trendy 25silver jewelry, save up 35% off today</li>
+                                    <?php
+                                        $args = array('post_type' => 'page','p' => 168);
+                                        $loop = new wp_query($args);
+                                        if($loop->have_posts()) { $loop->the_post();
+                                    ?>
+                                        <?php if( have_rows('top_header_slider') ): ?>
+                                            <?php while( have_rows('top_header_slider') ): the_row(); ?>            
+                                                <li><?php echo get_sub_field('text'); ?></li>      
+                                            <?php endwhile; ?>
+                                        <?php endif; ?>    
+                                    <?php } wp_reset_query();?>
                                 </ul>
                             </div>
                         </div>
@@ -183,8 +190,13 @@
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
-                                <li>Need help? Call Us: <strong class="text-brand"> + 1800 900</strong></li>
-                                <li>
+                                <li>Need help? Call Us: <strong class="text-brand"> <?php 
+                                    $contact_phone = get_field('phone', 166);
+                                    if ($contact_phone) {
+                                        echo '<a href="tel:' . $contact_phone . '">' . $contact_phone . '</a>';
+                                    } 
+                                ?></strong></li>
+                                <li class="d-none">
                                     <a class="language-dropdown-active" href="#">English <i class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
                                         <li>
@@ -198,7 +210,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li>
+                                <li class="d-none">
                                     <a class="language-dropdown-active" href="#">USD <i class="fi-rs-angle-small-down"></i></a>
                                     <ul class="language-dropdown">
                                         <li>
@@ -218,34 +230,19 @@
                 </div>
             </div>
         </div>
-        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        <div class="ivory-header header-middle header-middle-ptb-1 d-none d-lg-block">
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                        <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Milks and Dairies</option>
-                                    <option>Wines & Alcohol</option>
-                                    <option>Clothing & Beauty</option>
-                                    <option>Pet Foods & Toy</option>
-                                    <option>Fast food</option>
-                                    <option>Baking material</option>
-                                    <option>Vegetables</option>
-                                    <option>Fresh Seafood</option>
-                                    <option>Noodles & Rice</option>
-                                    <option>Ice cream</option>
-                                </select>
-                                <input type="text" placeholder="Search for items..." />
-                            </form>
+                            <?php echo do_shortcode('[ivory-search id="303" title="AJAX Search Form for WooCommerce"]'); ?>
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
-                                <div class="search-location">
+                                <div class="search-location d-none">
                                     <form action="#">
                                         <select class="select-active">
                                             <option>Your Location</option>
@@ -265,7 +262,7 @@
                                         </select>
                                     </form>
                                 </div>
-                                <div class="header-action-icon-2">
+                                <div class="header-action-icon-2 d-none">
                                     <a href="shop-compare.html">
                                         <img class="svgInject" alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-compare.svg" />
                                         <span class="pro-count blue">3</span>
@@ -273,83 +270,80 @@
                                     <a href="shop-compare.html"><span class="lable ml-0">Compare</span></a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.html">
+                                    <a href="<?php echo function_exists('YITH_WCWL') ? YITH_WCWL()->get_wishlist_url() : '#'; ?>">
                                         <img class="svgInject" alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-heart.svg" />
-                                        <span class="pro-count blue">6</span>
+                                        <span class="pro-count blue" id="yith-wcwl-items-count"><?php 
+                                            // Get wishlist count using YITH Wishlist - separate from cart
+                                            $wishlist_count = 0;
+                                            
+                                            // Method 1: Direct function call
+                                            if (function_exists('yith_wcwl_count_products')) {
+                                                $wishlist_count = yith_wcwl_count_products();
+                                            }
+                                            // Method 2: YITH WCWL object
+                                            elseif (function_exists('YITH_WCWL') && method_exists(YITH_WCWL(), 'count_products')) {
+                                                $wishlist_count = YITH_WCWL()->count_products();
+                                            }
+                                            // Method 3: Count all products
+                                            elseif (function_exists('yith_wcwl_count_all_products')) {
+                                                $wishlist_count = yith_wcwl_count_all_products();
+                                            }
+                                            // Method 4: Database query as fallback
+                                            elseif (is_user_logged_in()) {
+                                                global $wpdb;
+                                                $user_id = get_current_user_id();
+                                                $wishlist_count = $wpdb->get_var($wpdb->prepare(
+                                                    "SELECT COUNT(*) FROM {$wpdb->yith_wcwl_items} WHERE user_id = %d",
+                                                    $user_id
+                                                ));
+                                            }
+                                            
+                                            echo intval($wishlist_count);
+                                        ?></span>
                                     </a>
-                                    <a href="shop-wishlist.html"><span class="lable">Wishlist</span></a>
+                                    <a href="<?php echo function_exists('YITH_WCWL') ? YITH_WCWL()->get_wishlist_url() : '#'; ?>"><span class="lable">Wishlist</span></a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                    <a class="mini-cart-icon" href="<?php echo function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart'); ?>">
                                         <img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-cart.svg" />
-                                        <span class="pro-count blue">2</span>
+                                        <span class="pro-count blue" id="cart-items-count"><?php 
+                                            // Count cart items - separate from wishlist
+                                            $cart_count = 0;
+                                            if (function_exists('WC') && WC()->cart) {
+                                                $cart_count = WC()->cart->get_cart_contents_count();
+                                            }
+                                            echo intval($cart_count);
+                                        ?></span>
                                     </a>
-                                    <a href="shop-cart.html"><span class="lable">Cart</span></a>
+                                    <a href="<?php echo function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart'); ?>"><span class="lable">Cart</span></a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        <ul>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-left.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-3.jpg" /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-left.html">Daisy Casual Bag</a></h4>
-                                                    <h4><span>1 × </span>$800.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-left.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-2.jpg" /></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-left.html">Corduroy Shirts</a></h4>
-                                                    <h4><span>1 × </span>$3200.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-total">
-                                                <h4>Total <span>$4000.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-button">
-                                                <a href="shop-cart.html" class="outline">View cart</a>
-                                                <a href="shop-checkout.html">Checkout</a>
-                                            </div>
-                                        </div>
+                                        <?php get_template_part('template-parts/cart-dropdown-content'); ?>
                                     </div>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a href="page-account.html">
+                                    <a href="<?php echo get_permalink(11); ?>">
                                         <img class="svgInject" alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-user.svg" />
                                     </a>
-                                    <a href="page-account.html"><span class="lable ml-0">Account</span></a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                                        <ul>
-                                            <li>
-                                                <a href="page-account.html"><i class="fi fi-rs-user mr-10"></i>My Account</a>
-                                            </li>
-                                            <li>
-                                                <a href="page-account.html"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a>
-                                            </li>
-                                            <li>
-                                                <a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a>
-                                            </li>
-                                            <li>
-                                                <a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a>
-                                            </li>
-                                            <li>
-                                                <a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a>
-                                            </li>
-                                            <li>
-                                                <a href="page-login.html"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <a href="<?php echo get_permalink(11); ?>"><span class="lable ml-0">Account</span></a>
+                                                                         <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                         <ul>
+                                             <?php if (is_user_logged_in()) : ?>
+                                                 <li>
+                                                     <a href="<?php echo get_permalink(11); ?>"><i class="fi fi-rs-user mr-10"></i>My Account</a>
+                                                 </li>
+                                                 <li>
+                                                     <a href="<?php echo function_exists('YITH_WCWL') ? YITH_WCWL()->get_wishlist_url() : '#'; ?>"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a>
+                                                 </li>
+                                                 <li>
+                                                     <a href="<?php echo wp_logout_url(home_url()); ?>"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                                 </li>
+                                             <?php else : ?>
+                                                 <li>
+                                                     <a href="<?php echo function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account'); ?>"><i class="fi fi-rs-user mr-10"></i>Sign in</a>
+                                                 </li>
+                                             <?php endif; ?>
+                                         </ul>
+                                     </div>
                                 </div>
                             </div>
                         </div>
@@ -360,11 +354,11 @@
         <div class="header-bottom header-bottom-bg-color sticky-bar">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
-                    <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
-                    </div>
+                                         <div class="logo logo-width-1 d-block d-lg-none">
+                         <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                     </div>
                     <div class="header-nav d-none d-lg-flex">
-                        <div class="main-categori-wrap d-none d-lg-block">
+                        <div class="main-categori-wrap d-none d-lg-block-">
                             <a class="categories-button-active" href="#">
                                 <span class="fi-rs-apps"></span> <span class="et">Browse</span> All Categories
                                 <i class="fi-rs-angle-down"></i>
@@ -460,7 +454,12 @@
                     </div>
                     <div class="hotline d-none d-lg-flex">
                         <img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-headphone.svg" alt="hotline" />
-                        <p>1900 - 888<span>24/7 Support Center</span></p>
+                        <p><?php 
+                            $contact_phone = get_field('phone', 166);
+                            if ($contact_phone) {
+                                echo '<a href="tel:' . $contact_phone . '">' . $contact_phone . '</a>';
+                            } 
+                        ?><span>24/7 Support Center</span></p>
                     </div>
                     <div class="header-action-icon-2 d-block d-lg-none">
                         <div class="burger-icon burger-icon-white">
@@ -472,52 +471,52 @@
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
-                                <a href="shop-wishlist.html">
+                                <a href="<?php echo function_exists('YITH_WCWL') ? YITH_WCWL()->get_wishlist_url() : '#'; ?>">
                                     <img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-heart.svg" />
-                                    <span class="pro-count white">4</span>
+                                    <span class="pro-count white" id="yith-wcwl-items-count-mobile"><?php 
+                                        // Get wishlist count using YITH Wishlist - separate from cart
+                                        $wishlist_count = 0;
+                                        
+                                        // Method 1: Direct function call
+                                        if (function_exists('yith_wcwl_count_products')) {
+                                            $wishlist_count = yith_wcwl_count_products();
+                                        }
+                                        // Method 2: YITH WCWL object
+                                        elseif (function_exists('YITH_WCWL') && method_exists(YITH_WCWL(), 'count_products')) {
+                                            $wishlist_count = YITH_WCWL()->count_products();
+                                        }
+                                        // Method 3: Count all products
+                                        elseif (function_exists('yith_wcwl_count_all_products')) {
+                                            $wishlist_count = yith_wcwl_count_all_products();
+                                        }
+                                        // Method 4: Database query as fallback
+                                        elseif (is_user_logged_in()) {
+                                            global $wpdb;
+                                            $user_id = get_current_user_id();
+                                            $wishlist_count = $wpdb->get_var($wpdb->prepare(
+                                                "SELECT COUNT(*) FROM {$wpdb->yith_wcwl_items} WHERE user_id = %d",
+                                                $user_id
+                                            ));
+                                        }
+                                        
+                                        echo intval($wishlist_count);
+                                    ?></span>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="#">
+                                <a class="mini-cart-icon" href="<?php echo function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart'); ?>">
                                     <img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/theme/icons/icon-cart.svg" />
-                                    <span class="pro-count white">2</span>
+                                    <span class="pro-count white" id="cart-items-count-mobile"><?php 
+                                        // Count cart items - separate from wishlist
+                                        $cart_count = 0;
+                                        if (function_exists('WC') && WC()->cart) {
+                                            $cart_count = WC()->cart->get_cart_contents_count();
+                                        }
+                                        echo intval($cart_count);
+                                    ?></span>
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                    <ul>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-left.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-3.jpg" /></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-left.html">Plain Striola Shirts</a></h4>
-                                                <h3><span>1 × </span>$800.00</h3>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-left.html"><img alt="Nest" src="<?php bloginfo('template_directory');?>/assets/imgs/shop/thumbnail-4.jpg" /></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-left.html">Macbook Pro 2024</a></h4>
-                                                <h3><span>1 × </span>$3500.00</h3>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>$383.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="shop-cart.html">View cart</a>
-                                            <a href="shop-checkout.html">Checkout</a>
-                                        </div>
-                                    </div>
+                                    <?php get_template_part('template-parts/cart-dropdown-content'); ?>
                                 </div>
                             </div>
                         </div>
@@ -526,12 +525,12 @@
             </div>
         </div>
     </header>
-    <div class="mobile-header-active mobile-header-wrapper-style">
+    <div class="ivory-header mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
-                <div class="mobile-header-logo">
-                    <a href="index.html"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
-                </div>
+                                 <div class="mobile-header-logo">
+                     <a href="<?php echo home_url(); ?>"><img src="<?php bloginfo('template_directory');?>/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
                         <i class="icon-top"></i>
@@ -541,26 +540,23 @@
             </div>
             <div class="mobile-header-content-area">
                 <div class="mobile-search search-style-3 mobile-header-border">
-                    <form action="#">
-                        <input type="text" placeholder="Search for items…" />
-                        <button type="submit"><i class="fi-rs-search"></i></button>
-                    </form>
+                    <?php echo do_shortcode('[ivory-search id="303" title="AJAX Search Form for WooCommerce"]'); ?>
                 </div>
                 <div class="mobile-menu-wrap mobile-header-border">
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu font-heading">
-                            <li class="menu-item-has-children">
-                                <a href="index.html">Home</a>
-                                <ul class="dropdown d-none">
-                                    <li><a href="index.html">Home 1</a></li>
-                                    <li><a href="index-2.html">Home 2</a></li>
-                                    <li><a href="index-3.html">Home 3</a></li>
-                                    <li><a href="index-4.html">Home 4</a></li>
-                                    <li><a href="index-5.html">Home 5</a></li>
-                                    <li><a href="index-6.html">Home 6</a></li>
-                                </ul>
-                            </li>
+                                                         <li class="menu-item-has-children">
+                                 <a href="<?php echo home_url(); ?>">Home</a>
+                                 <ul class="dropdown d-none">
+                                     <li><a href="<?php echo home_url(); ?>">Home 1</a></li>
+                                     <li><a href="index-2.html">Home 2</a></li>
+                                     <li><a href="index-3.html">Home 3</a></li>
+                                     <li><a href="index-4.html">Home 4</a></li>
+                                     <li><a href="index-5.html">Home 5</a></li>
+                                     <li><a href="index-6.html">Home 6</a></li>
+                                 </ul>
+                             </li>
                             <li class="menu-item-has-children">
                                 <a href="page-about.html">About</a>
                             </li>
@@ -660,7 +656,7 @@
                                 </ul>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="page-contact.html">Contact</a>
+                                <a href="<?php echo get_permalink(166); ?>">Contact</a>
                             </li>
                             <li class="menu-item-has-children d-none">
                                 <a href="#">Pages</a>
@@ -699,7 +695,18 @@
                         <a href="page-login.html"><i class="fi-rs-user"></i>Log In / Sign Up </a>
                     </div>
                     <div class="single-mobile-header-info">
-                        <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
+                        <a href="<?php 
+                            $contact_phone = get_field('phone', 166);
+                            if ($contact_phone) {
+                                echo 'tel:' . $contact_phone;
+                            } else {
+                                echo '#';
+                            }
+                        ?>"><i class="fi-rs-headphones"></i><?php 
+                            if ($contact_phone) {
+                                echo $contact_phone;
+                            } 
+                        ?> </a>
                     </div>
                 </div>
                 <div class="mobile-social-icon mb-50">
@@ -715,3 +722,65 @@
         </div>
     </div>
     <!--End header-->
+    
+    <script>
+    // Simple counter protection - prevent other scripts from overriding our counters
+    document.addEventListener('DOMContentLoaded', function() {
+        // Store original values
+        var originalWishlistCount = document.getElementById('yith-wcwl-items-count') ? document.getElementById('yith-wcwl-items-count').textContent : '0';
+        var originalCartCount = document.getElementById('cart-items-count') ? document.getElementById('cart-items-count').textContent : '0';
+        
+        
+        // Protect wishlist counter from being changed by other scripts
+        function protectWishlistCounter() {
+            var wishlistCounter = document.getElementById('yith-wcwl-items-count');
+            var mobileWishlistCounter = document.getElementById('yith-wcwl-items-count-mobile');
+            
+            if (wishlistCounter && wishlistCounter.textContent !== originalWishlistCount) {
+                wishlistCounter.textContent = originalWishlistCount;
+            }
+            
+            if (mobileWishlistCounter && mobileWishlistCounter.textContent !== originalWishlistCount) {
+                mobileWishlistCounter.textContent = originalWishlistCount;
+            }
+        }
+        
+        // Protect cart counter from being changed by other scripts
+        function protectCartCounter() {
+            var cartCounter = document.getElementById('cart-items-count');
+            var mobileCartCounter = document.getElementById('cart-items-count-mobile');
+            
+            if (cartCounter && cartCounter.textContent !== originalCartCount) {
+                cartCounter.textContent = originalCartCount;
+            }
+            
+            if (mobileCartCounter && mobileCartCounter.textContent !== originalCartCount) {
+                mobileCartCounter.textContent = originalCartCount;
+            }
+        }
+        
+        // Run protection every 100ms
+        setInterval(protectWishlistCounter, 100);
+        setInterval(protectCartCounter, 100);
+        
+        // Only update wishlist when wishlist events occur
+        jQuery(document).on('added_to_wishlist removed_from_wishlist', function() {
+            setTimeout(function() {
+                if (typeof yith_wcwl_count_products === 'function') {
+                    var newCount = yith_wcwl_count_products();
+                    originalWishlistCount = newCount;
+                }
+            }, 500);
+        });
+        
+        // Only update cart when cart events occur
+        jQuery(document).on('added_to_cart removed_from_cart', function() {
+            setTimeout(function() {
+                if (typeof WC !== 'undefined' && WC.cart) {
+                    var newCount = WC.cart.get_cart_contents_count();
+                    originalCartCount = newCount;
+                }
+            }, 500);
+        });
+    });
+    </script>
